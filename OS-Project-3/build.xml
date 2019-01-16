@@ -1,0 +1,130 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ->
+ <-     ______       ________     _________      ________     ->
+ <-    /      \     /        \    |        \    /        \    ->
+ <-   /  ┌~~┐  \    |             |  ▓▓▓▓  |    |        |    ->
+ <-   |  |▓▓|  |    \________     |________/        _____/    ->
+ <-   |  |▓▓|  |             \    |                      \    ->
+ <-   \  └~~┘  /             |    |             |        |    ->
+ <-    \______/     \________/    |             \________/    ->
+ <-                                                           ->
+< - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- OSP3 Project Buildfile -->
+<project name = "OSP3" basedir = "." default = "main">
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - ->
+     <-                                                   ->
+     <-           Variables for Ant Buildfile             ->
+     <-                                                   ->
+    < - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!--Source Code Directory -->
+    <property name = "src.dir"      value = "src"/>
+    <!--Build Directory -->
+    <property name = "build.dir"    value = "build"/>
+    <!--Class Directory -->
+    <property name = "classes.dir"  value = "${build.dir}/classes"/>
+    <!--Jar Directory -->
+    <property name = "jar.dir"      value = "${build.dir}/jar"/>
+    <!--Main Class Name -->
+    <property name = "main-class"   value = "osp.Main"/>
+    <!--Data Diretory -->
+    <property name = "data.dir"     value = "data/"/>
+
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - ->
+     <-                                                   ->
+     <-                                                   ->
+     <-            Targets for Ant Buildfile              ->
+     <-                                                   ->
+     <-                                                   ->
+    < - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - ->
+     <-                                                 ->
+     <-               Clean Ant Targets                 ->
+     <-                                                 ->
+    < - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Clean Build Generated Files -->
+    <target name = "clean_build">
+        <delete dir = "${build.dir}"/>
+    </target>
+
+    <!-- Clean Program Generated Data Files -->
+    <target name = "clean_data">
+        <delete dir="${data.dir}"/>
+    </target>
+
+    <!-- Clean All Generated Files -->
+    <target name = "clean" depends = "clean_build, clean_data"/>
+
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - ->
+     <-                                                 ->
+     <-               Build Ant Targets                 ->
+     <-                                                 ->
+    < - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Compile Program -->
+    <target name = "compile">
+        <mkdir dir = "${classes.dir}"/>
+        <javac srcdir = "${src.dir}" destdir = "${classes.dir}"/>
+    </target>
+
+    <!-- Create Executable Jar from Compiled Files -->
+    <target name = "jar">
+        <mkdir dir = "${jar.dir}"/>
+        <jar destfile = "${jar.dir}/${ant.project.name}.jar" basedir = "${classes.dir}">
+            <manifest>
+                <attribute name = "Main-Class" value = "${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - ->
+     <-                                                 ->
+     <-                Run Ant Targets                  ->
+     <-                                                 ->
+    < - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Run Jar File -->
+    <target name = "run">
+        <java jar = "${jar.dir}/${ant.project.name}.jar" fork = "true"/>
+    </target>
+
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - ->
+     <-                                                 ->
+     <-               Alias Ant Targets                 ->
+     <-                                                 ->
+    < - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Clean -->
+    <target name = "c" depends = "clean"/>
+    <!-- Compile -->
+    <target name = "build" depends = "compile"/>
+    <!-- Compile -->
+    <target name = "b" depends = "compile"/>
+    <!-- Compile -->
+    <target name = "bj" depends = "compile, jar"/>
+    <!-- Clean and Compile -->
+    <target name = "cb" depends = "clean, compile"/>
+    <!-- Clean, Compile, and Jar -->
+    <target name = "cbj" depends = "clean, compile, jar"/>
+    <!-- Clean, Compile, Jar, and Run -->
+    <target name = "cbjr" depends = "clean, compile, jar, run"/>
+    <!-- Compile, Jar, and Run -->
+    <target name = "br" depends = "compile, jar, run"/>
+    <!-- Compile, Jar -->
+    <target name = "j" depends = "compile, jar"/>
+    <!-- Run -->
+    <target name = "r" depends = "run"/>
+
+
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - ->
+     <-                                                 ->
+     <-               Primary Ant Target                ->
+     <-                                                 ->
+    < - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Main Ant Task -->
+    <target name = "main" depends = "clean, compile, jar, run"/>
+</project>
